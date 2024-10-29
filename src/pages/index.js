@@ -1,6 +1,5 @@
-import Formulario from '@/components/Formulario';
-import TablaCupos from '@/components/TablaCupos';
-import '@/public/styles.css';
+import Formulario from '../components/Formulario';
+import TablaCupos from '../components/TablaCupos';
 
 export default function Home() {
     return (
