@@ -1,0 +1,116 @@
+/* Estilos básicos y responsive */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+}
+
+input, select, button {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#mensaje {
+    text-align: center;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+/* Estilos de la tabla */
+.table-container {
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 20px;
+}
+
+#tablaCupos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+#tablaCupos th, #tablaCupos td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+#tablaCupos th {
+    background-color: #007bff;
+    color: white;
+}
+
+#tablaCupos tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#tablaCupos tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container, .table-container {
+        padding: 15px;
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    button {
+        font-size: 1em;
+    }
+
+    #tablaCupos {
+        font-size: 0.8em;
+    }
+}
