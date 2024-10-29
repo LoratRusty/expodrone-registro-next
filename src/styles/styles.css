@@ -63,37 +63,6 @@ button:hover {
     color: #d9534f;
 }
 
-/* Estilos de la tabla */
-.table-container {
-    width: 100%;
-    max-width: 1000px;
-    margin-top: 20px;
-}
-
-#tablaCupos {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9em;
-}
-
-#tablaCupos th, #tablaCupos td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-#tablaCupos th {
-    background-color: #007bff;
-    color: white;
-}
-
-#tablaCupos tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-#tablaCupos tbody tr:hover {
-    background-color: #e9ecef;
-}
 
 /* Responsive */
 @media (max-width: 768px) {

@@ -1,3 +1,5 @@
+// src/pages/_app.js
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/styles.css';
 
 function MyApp({ Component, pageProps }) {

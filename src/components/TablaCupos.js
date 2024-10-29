@@ -10,25 +10,30 @@ export default function TablaCupos() {
     }, []);
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Conferencia</th>
-                    <th>Expositores</th>
-                    <th>Día</th>
-                    <th>Cupos Disponibles</th>
-                </tr>
-            </thead>
-            <tbody>
-                {cupos.map((cup) => (
-                    <tr key={cup.id}>
-                        <td>{cup.nombre}</td>
-                        <td>{cup.expositor}</td>
-                        <td>{cup.dia}</td>
-                        <td>{cup.disponibles}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <div className="container mt-4">
+            <h2 className="text-center mb-4">Listado de Conferencias</h2>
+            <div className="table-responsive">
+                <table className="table table-striped table-bordered">
+                    <thead className="table-primary">
+                        <tr>
+                            <th>Conferencia</th>
+                            <th>Expositores</th>
+                            <th>Día</th>
+                            <th>Cupos Disponibles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {cupos.map((cup) => (
+                            <tr key={cup.id}>
+                                <td>{cup.conferencia}</td>
+                                <td>{cup.expositores}</td>
+                                <td>{new Date(cup.dia).toLocaleDateString()}</td>
+                                <td>{cup.cupos_disponibles}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 }
