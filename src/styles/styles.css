@@ -24,7 +24,7 @@ body {
 /* Título del formulario */
 h2 {
     font-size: 1.75em;
-    color: white;
+    color: #333;
     margin-bottom: 20px;
     text-align: center;
     font-weight: 600;
@@ -33,15 +33,16 @@ h2 {
 
 /* Estilos de etiquetas y campos del formulario */
 label {
-    font-weight: 500;
+    font-weight: bold; /* Texto en negrita */
     color: #000; /* Color negro para etiquetas */
     font-size: 0.95em;
     margin-bottom: 5px;
 }
 
-/* Color negro para el texto dentro del select */
+/* Texto en negrita y color negro para el texto dentro del select */
 select.form-control {
     color: #000;
+    font-weight: bold; /* Texto en negrita */
 }
 
 .form-control {

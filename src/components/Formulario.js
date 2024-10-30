@@ -103,7 +103,7 @@ export default function Formulario() {
                 <div className="col-12 col-md-10 col-lg-6">
                     <div className="card shadow-lg">
                         <div className="card-header bg-primary text-white">
-                            <h2 className="text-center mb-0">Formulario de Registro</h2>
+                            <h1 className="text-center mb-0">Formulario de Registro</h1>
                         </div>
                         <div className="card-body">
                             {mensaje && (
