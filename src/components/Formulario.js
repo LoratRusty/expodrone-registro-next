@@ -103,7 +103,7 @@ export default function Formulario() {
                 <div className="col-12 col-md-10 col-lg-6">
                     <div className="card shadow-lg">
                         <div className="card-header bg-primary text-white">
-                            <h2 className="text-center mb-0">Registro de Oyentes / Participantes</h2>
+                            <h2 className="text-center mb-0">Formulario de Registro</h2>
                         </div>
                         <div className="card-body">
                             {mensaje && (
@@ -118,17 +118,23 @@ export default function Formulario() {
                                 </div>
                             )}
                             <form onSubmit={handleSubmit} className="row g-3">
-                                <div className="col-md-12">
-                                    <label htmlFor="cedula" className="form-label">Cédula</label>
-                                    <input
-                                        type="number"
-                                        id="cedula"
-                                        value={formData.cedula}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        required
-                                    />
-                                </div>
+                            <div className="col-md-12">
+                                <label htmlFor="cedula" className="form-label">Cédula (Ingresar solo Números)</label>
+                                <input
+                                    type="text" // Cambia a 'text' para que podamos aplicar validación personalizada
+                                    id="cedula"
+                                    value={formData.cedula}
+                                    onChange={(e) => {
+                                        // Filtrar solo números
+                                        const value = e.target.value.replace(/\D/g, '');
+                                        handleChange({ target: { id: 'cedula', value } });
+                                    }}
+                                    className="form-control"
+                                    required
+                                    placeholder="Ejemplo: 12457215"
+                                />
+                            </div>
+
 
                                 <div className="col-md-12">
                                     <label htmlFor="nombre" className="form-label">Nombres</label>
@@ -139,6 +145,7 @@ export default function Formulario() {
                                         onChange={handleChange}
                                         className="form-control"
                                         required
+                                        placeholder="Ingrese sus nombres"
                                     />
                                 </div>
 
@@ -151,6 +158,7 @@ export default function Formulario() {
                                         onChange={handleChange}
                                         className="form-control"
                                         required
+                                        placeholder="Ingrese sus apellidos"
                                     />
                                 </div>
 
@@ -163,6 +171,7 @@ export default function Formulario() {
                                         onChange={handleChange}
                                         className="form-control"
                                         required
+                                        placeholder="Ejemplo: user@gmail.com"
                                     />
                                 </div>
 
@@ -172,9 +181,13 @@ export default function Formulario() {
                                         type="tel"
                                         id="telefono"
                                         pattern="[0-9]{11}"
-                                        placeholder="Solo números"
+                                        placeholder="Ejemplo: 04124551232"
                                         value={formData.telefono}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            // Filtrar solo números
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            handleChange({ target: { id: 'telefono', value } });
+                                        }}
                                         className="form-control"
                                         required
                                     />
