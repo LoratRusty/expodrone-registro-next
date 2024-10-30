@@ -74,7 +74,7 @@ export default function TablaInscritos() {
                 ),
             },
         ],
-        [conferencias]
+        [conferencias, obtenerNombresConferencias] // Corrección aquí
     );
 
     // Aplicar filtro de conferencia
@@ -83,7 +83,7 @@ export default function TablaInscritos() {
             filtroConferencia
                 ? inscritos.filter((item) => obtenerNombresConferencias(item.conferencias).includes(filtroConferencia))
                 : inscritos,
-        [inscritos, filtroConferencia, conferencias]
+        [inscritos, filtroConferencia, conferencias, obtenerNombresConferencias] // Corrección aquí
     );
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
@@ -115,9 +115,11 @@ export default function TablaInscritos() {
             <Table {...getTableProps()} striped bordered hover responsive className="table">
                 <thead className="table-primary">
                     {headerGroups.map((headerGroup) => (
-                        <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+                        <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}> {/* Corrección aquí */}
                             {headerGroup.headers.map((column) => (
-                                <th {...column.getHeaderProps({ style: column.style })}>{column.render('Header')}</th>
+                                <th {...column.getHeaderProps({ style: column.style })} key={column.id}> {/* Corrección aquí */}
+                                    {column.render('Header')}
+                                </th>
                             ))}
                         </tr>
                     ))}
@@ -126,9 +128,11 @@ export default function TablaInscritos() {
                     {rows.map((row) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} key={row.id}>
+                            <tr {...row.getRowProps()} key={row.id}> {/* Corrección aquí */}
                                 {row.cells.map((cell) => (
-                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                    <td {...cell.getCellProps()} key={cell.column.id}> {/* Corrección aquí */}
+                                        {cell.render('Cell')}
+                                    </td>
                                 ))}
                             </tr>
                         );
