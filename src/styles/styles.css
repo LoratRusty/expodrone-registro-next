@@ -1,171 +1,119 @@
-/* Estilos básicos y responsive */
+/* Estilos del cuerpo para centrar el contenido */
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f9f9f9;
+    background-color: #f3f4f6;
     margin: 0;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-h1 {
-    font-size: 2em;
-    color: #333;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
+/* Contenedor principal del formulario */
 .container {
     width: 100%;
-    max-width: 600px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-label {
-    font-weight: bold;
-    color: #333;
-}
-
-input, select, button {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #007bff;
+/* Título del formulario */
+h2 {
+    font-size: 1.75em;
     color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-button:hover {
+/* Estilos de etiquetas y campos del formulario */
+label {
+    font-weight: 500;
+    color: #000; /* Color negro para etiquetas */
+    font-size: 0.95em;
+    margin-bottom: 5px;
+}
+
+/* Color negro para el texto dentro del select */
+select.form-control {
+    color: #000;
+}
+
+.form-control {
+    padding: 12px;
+    font-size: 1em;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+/* Botón de envío */
+.btn-primary {
+    font-weight: 600;
+    font-size: 1em;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: block;
+    width: 100%;
+}
+
+.btn-primary:hover {
     background-color: #0056b3;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
 }
 
 #mensaje {
     text-align: center;
     font-weight: bold;
+    font-size: 1em;
     color: #d9534f;
+    margin-bottom: 10px;
 }
 
-/* Estilos base para Formulario */
-.form-label {
-    font-size: 16px;
-}
-.form-control {
-    padding: 10px;
-    font-size: 14px;
-}
-.btn {
-    font-size: 14px;
-}
-
-/* Ajustes para pantallas pequeñas (menores de 576px) */
+/* Ajustes para pantallas pequeñas (menos de 576px) */
 @media (max-width: 576px) {
-    .container-fluid {
-        padding: 10px;
+    .container {
+        padding: 30px 20px;
     }
-    .form-label, .btn {
-        font-size: 14px;
+    h2 {
+        font-size: 1.5em;
+    }
+    label {
+        font-size: 0.85em;
     }
     .form-control {
-        font-size: 13px;
-        padding: 8px;
+        padding: 10px;
+        font-size: 0.95em;
     }
     .btn-primary {
-        width: 100%;
-    }
-}
-
-/* Ajustes para pantallas medianas (576px - 768px) */
-@media (min-width: 576px) and (max-width: 768px) {
-    .form-label {
-        font-size: 15px;
-    }
-    .form-control {
-        font-size: 13px;
-        padding: 9px;
-    }
-}
-
-
-/* Estilos base para TablaCupos */
-.table th, .table td {
-    font-size: 15px;
-    padding: 10px;
-}
-
-/* Ajustes para pantallas pequeñas (menores de 576px) */
-@media (max-width: 576px) {
-    .table th, .table td {
-        font-size: 13px;
-        padding: 8px;
-    }
-    .container-fluid {
+        font-size: 0.95em;
         padding: 10px;
     }
-    h2 {
-        font-size: 18px;
-    }
 }
 
 /* Ajustes para pantallas medianas (576px - 768px) */
 @media (min-width: 576px) and (max-width: 768px) {
-    .table th, .table td {
-        font-size: 14px;
-        padding: 9px;
-    }
-}
-
-
-/* Estilos base para TablaInscritos */
-.table th, .table td {
-    font-size: 15px;
-    padding: 10px;
-}
-
-/* Ajustes para pantallas pequeñas (menores de 576px) */
-@media (max-width: 576px) {
-    .table th, .table td {
-        font-size: 13px;
-        padding: 8px;
-    }
-    .table-responsive {
-        overflow-x: auto;
-    }
-    .container-fluid {
-        padding: 10px;
+    .container {
+        padding: 35px 25px;
     }
     h2 {
-        font-size: 18px;
+        font-size: 1.6em;
     }
-    .form-label {
-        font-size: 14px;
-    }
-}
-
-/* Ajustes para pantallas medianas (576px - 768px) */
-@media (min-width: 576px) and (max-width: 768px) {
-    .table th, .table td {
-        font-size: 14px;
-        padding: 9px;
-    }
-    .form-label {
-        font-size: 15px;
+    label {
+        font-size: 0.9em;
     }
 }

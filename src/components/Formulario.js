@@ -194,7 +194,7 @@ export default function Formulario() {
                                 </div>
 
                                 <div className="col-md-12">
-                                    <label className="form-label">Conferencias (máximo 3)</label>
+                                    <label className="form-label">Seleeciona las Conferencias que deseas participar (máximo 3)</label>
                                     <div className="row row-cols-1 g-2 mt-2">
                                         {conferencias.map((conf) => (
                                             <div key={conf.id} className="col">
