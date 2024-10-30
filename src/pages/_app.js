@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 function MyApp({ Component, pageProps }) {
     useEffect(() => {
-        // Solo cargar en el lado del cliente
+        // Solo cargar Bootstrap JS en el lado del cliente
         if (typeof window !== 'undefined') {
             import('bootstrap/dist/js/bootstrap.bundle.min.js')
                 .then(() => console.log("Bootstrap JS cargado en el cliente"))

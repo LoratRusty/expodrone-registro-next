@@ -1,20 +1,14 @@
+// src/components/TablaCupos.js
 import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-
-// Cargar DataTables y jQuery solo en el lado del cliente
-const $ = typeof window !== 'undefined' ? require('jquery') : () => {};
-
-if (typeof window !== 'undefined') {
-    require('datatables.net-bs5');
-    require('datatables.net-responsive-bs5');
-}
+import $ from 'jquery';
+import 'datatables.net-bs5';
+import 'datatables.net-responsive-bs5';
 
 export default function TablaCupos() {
     const [cupos, setCupos] = useState([]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            // Cargar datos y configurar DataTables
             fetch('/api/registrar')
                 .then((res) => res.json())
                 .then((data) => {
