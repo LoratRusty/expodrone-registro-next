@@ -7,6 +7,7 @@ import TablaInscritos from '../components/TablaInscritos';
 export default function Home() {
     return (
         <div className="main-container">
+            {/* Agrega el título y viewport con el componente Head */}
             <Head>
                 <title>Formulario de Registro</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
