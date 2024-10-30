@@ -1,31 +1,40 @@
 import { useState, useEffect } from 'react';
-import $ from 'jquery';
-import 'datatables.net-bs5';
-import 'datatables.net-responsive-bs5';
+import dynamic from 'next/dynamic';
+
+// Cargar DataTables y jQuery solo en el lado del cliente
+const $ = typeof window !== 'undefined' ? require('jquery') : () => {};
+
+if (typeof window !== 'undefined') {
+    require('datatables.net-bs5');
+    require('datatables.net-responsive-bs5');
+}
 
 export default function TablaCupos() {
     const [cupos, setCupos] = useState([]);
 
     useEffect(() => {
-        fetch('/api/registrar')
-            .then((res) => res.json())
-            .then((data) => {
-                setCupos(data);
-                $('#tablaCupos').DataTable({
-                    responsive: true, // Habilita la responsividad
-                    autoWidth: false, // Previene que DataTables ajuste el ancho automáticamente
-                    language: {
-                        url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json' // Traducción a español (opcional)
-                    }
+        if (typeof window !== 'undefined') {
+            // Cargar datos y configurar DataTables
+            fetch('/api/registrar')
+                .then((res) => res.json())
+                .then((data) => {
+                    setCupos(data);
+                    $('#tablaCupos').DataTable({
+                        responsive: true,
+                        autoWidth: false,
+                        language: {
+                            url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json'
+                        }
+                    });
                 });
-            });
 
-        // Limpiar DataTable al desmontar el componente
-        return () => {
-            if ($.fn.DataTable.isDataTable('#tablaCupos')) {
-                $('#tablaCupos').DataTable().destroy();
-            }
-        };
+            // Limpiar DataTable al desmontar el componente
+            return () => {
+                if ($.fn.DataTable.isDataTable('#tablaCupos')) {
+                    $('#tablaCupos').DataTable().destroy();
+                }
+            };
+        }
     }, []);
 
     return (
