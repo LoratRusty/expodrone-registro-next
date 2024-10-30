@@ -63,30 +63,109 @@ button:hover {
     color: #d9534f;
 }
 
+/* Estilos base para Formulario */
+.form-label {
+    font-size: 16px;
+}
+.form-control {
+    padding: 10px;
+    font-size: 14px;
+}
+.btn {
+    font-size: 14px;
+}
 
-/* Responsive */
-@media (max-width: 768px) {
-    .container, .table-container {
-        padding: 15px;
-        width: 90%;
+/* Ajustes para pantallas pequeñas (menores de 576px) */
+@media (max-width: 576px) {
+    .container-fluid {
+        padding: 10px;
     }
-
-    h1 {
-        font-size: 1.8em;
+    .form-label, .btn {
+        font-size: 14px;
     }
-
-    button {
-        font-size: 1em;
+    .form-control {
+        font-size: 13px;
+        padding: 8px;
     }
+    .btn-primary {
+        width: 100%;
+    }
+}
 
-    #tablaCupos {
-        font-size: 0.8em;
+/* Ajustes para pantallas medianas (576px - 768px) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .form-label {
+        font-size: 15px;
+    }
+    .form-control {
+        font-size: 13px;
+        padding: 9px;
     }
 }
 
 
-/* Ajuste de la tabla para que ocupe todo el ancho en pantallas grandes */
-.container-fluid .table {
-    width: 100%;
+/* Estilos base para TablaCupos */
+.table th, .table td {
+    font-size: 15px;
+    padding: 10px;
 }
 
+/* Ajustes para pantallas pequeñas (menores de 576px) */
+@media (max-width: 576px) {
+    .table th, .table td {
+        font-size: 13px;
+        padding: 8px;
+    }
+    .container-fluid {
+        padding: 10px;
+    }
+    h2 {
+        font-size: 18px;
+    }
+}
+
+/* Ajustes para pantallas medianas (576px - 768px) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .table th, .table td {
+        font-size: 14px;
+        padding: 9px;
+    }
+}
+
+
+/* Estilos base para TablaInscritos */
+.table th, .table td {
+    font-size: 15px;
+    padding: 10px;
+}
+
+/* Ajustes para pantallas pequeñas (menores de 576px) */
+@media (max-width: 576px) {
+    .table th, .table td {
+        font-size: 13px;
+        padding: 8px;
+    }
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .container-fluid {
+        padding: 10px;
+    }
+    h2 {
+        font-size: 18px;
+    }
+    .form-label {
+        font-size: 14px;
+    }
+}
+
+/* Ajustes para pantallas medianas (576px - 768px) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .table th, .table td {
+        font-size: 14px;
+        padding: 9px;
+    }
+    .form-label {
+        font-size: 15px;
+    }
+}
