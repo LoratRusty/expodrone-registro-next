@@ -3,6 +3,17 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import { useTable } from 'react-table';
 
+// Función para convertir IDs de conferencias en nombres (como lista)
+const obtenerNombresConferencias = (ids, conferencias) => {
+    if (!ids || conferencias.length === 0) return []; // Devuelve un array vacío si no hay IDs o conferencias
+    const idArray = ids.split(','); // Separar las IDs por coma
+    return idArray
+        .map((id) => {
+            const conferencia = conferencias.find((conf) => conf.id === parseInt(id, 10));
+            return conferencia ? conferencia.conferencia : 'Desconocido';
+        });
+};
+
 export default function TablaInscritos() {
     const [inscritos, setInscritos] = useState([]);
     const [conferencias, setConferencias] = useState([]);
@@ -21,17 +32,6 @@ export default function TablaInscritos() {
             .then((data) => setConferencias(data))
             .catch((error) => console.error('Error al cargar conferencias:', error));
     }, []);
-
-    // Función para convertir IDs de conferencias en nombres (como lista)
-    const obtenerNombresConferencias = (ids) => {
-        if (!ids || conferencias.length === 0) return []; // Devuelve un array vacío si no hay IDs o conferencias
-        const idArray = ids.split(','); // Separar las IDs por coma
-        return idArray
-            .map((id) => {
-                const conferencia = conferencias.find((conf) => conf.id === parseInt(id, 10));
-                return conferencia ? conferencia.conferencia : 'Desconocido';
-            });
-    };
 
     // Configurar las columnas de la tabla con ancho fijo para algunas columnas
     const columns = useMemo(
@@ -64,7 +64,7 @@ export default function TablaInscritos() {
             },
             {
                 Header: 'Conferencias',
-                accessor: (row) => obtenerNombresConferencias(row.conferencias), // Convierte IDs a lista de nombres
+                accessor: (row) => obtenerNombresConferencias(row.conferencias, conferencias), // Convierte IDs a lista de nombres
                 Cell: ({ value }) => (
                     <ul style={{ paddingLeft: '20px', margin: 0 }}>
                         {(Array.isArray(value) ? value : []).map((conferencia, index) => (
@@ -74,16 +74,16 @@ export default function TablaInscritos() {
                 ),
             },
         ],
-        [conferencias, obtenerNombresConferencias] // Corrección aquí
+        [conferencias]
     );
 
     // Aplicar filtro de conferencia
     const data = useMemo(
         () =>
             filtroConferencia
-                ? inscritos.filter((item) => obtenerNombresConferencias(item.conferencias).includes(filtroConferencia))
+                ? inscritos.filter((item) => obtenerNombresConferencias(item.conferencias, conferencias).includes(filtroConferencia))
                 : inscritos,
-        [inscritos, filtroConferencia, conferencias, obtenerNombresConferencias] // Corrección aquí
+        [inscritos, filtroConferencia, conferencias]
     );
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
