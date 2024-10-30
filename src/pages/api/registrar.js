@@ -10,7 +10,19 @@ export default async function handler(req, res) {
             throw new Error('Variables de entorno Supabase URL o ANON_KEY no están configuradas.');
         }
 
+        // Obtener la lista de conferencias o la lista de inscritos
         if (req.method === 'GET') {
+            if (req.query.inscritos) {
+                const { data: inscripciones, error: errorInscripciones } = await supabase
+                    .from('inscripciones')
+                    .select('cedula, nombre, apellido, correo, telefono, conferencias');
+
+                if (errorInscripciones) throw new Error(`Error al obtener inscripciones: ${errorInscripciones.message}`);
+
+                return res.status(200).json(inscripciones);
+            }
+
+            // Obtener lista de conferencias si no hay query de `inscritos`
             const { data, error } = await supabase
                 .from('cupos')
                 .select('id, conferencia, expositores, dia, cupos_disponibles');
@@ -40,12 +52,20 @@ export default async function handler(req, res) {
             if (errorVerificacion && errorVerificacion.code !== 'PGRST116') throw errorVerificacion;
 
             if (registroExistente) {
-                // Si ya existe, retornamos un mensaje específico
                 return res.status(400).json({ message: 'La cédula ya se encuentra registrada' });
             }
 
-            // Convertimos las conferencias seleccionadas en una cadena separada por comas
-            const conferenciasSeleccionadas = conferencias.join(',');
+            // Obtener los nombres de las conferencias seleccionadas
+            const { data: conferenciasData, error: errorConferencias } = await supabase
+                .from('cupos')
+                .select('id, conferencia')
+                .in('id', conferencias);
+
+            if (errorConferencias) throw new Error(`Error al obtener conferencias: ${errorConferencias.message}`);
+
+            const nombresConferencias = conferenciasData
+                .map((conf) => conf.conferencia)
+                .join(',');
 
             // Verificar disponibilidad de cupos para todas las conferencias seleccionadas
             const { data: cuposDisponibles, error: cupoError } = await supabase
@@ -60,10 +80,10 @@ export default async function handler(req, res) {
                 return res.status(400).json({ message: `No hay cupos disponibles para la conferencia con ID ${sinCupo.id}` });
             }
 
-            // Registrar el participante en la tabla de inscripciones con la cadena de conferencias
+            // Registrar el participante en la tabla de inscripciones con los nombres de las conferencias
             const { error: inscripcionError } = await supabase
                 .from('inscripciones')
-                .insert([{ cedula, nombre, apellido, correo, telefono, conferencias: conferenciasSeleccionadas }]);
+                .insert([{ cedula, nombre, apellido, correo, telefono, conferencias: nombresConferencias }]);
 
             if (inscripcionError) throw new Error(`Error al registrar inscripción: ${inscripcionError.message}`);
 

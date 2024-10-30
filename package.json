@@ -18,7 +18,9 @@
     "jquery": "^3.7.1",
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
-    "react-dom": "19.0.0-rc-02c0e824-20241028"
+    "react-bootstrap": "^2.10.5",
+    "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "react-table": "^7.8.0"
   },
   "devDependencies": {
     "@types/node": "^20",
