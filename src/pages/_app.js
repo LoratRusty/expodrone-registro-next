@@ -7,7 +7,12 @@ import { useEffect } from 'react';
 
 function MyApp({ Component, pageProps }) {
     useEffect(() => {
-        require('bootstrap/dist/js/bootstrap.bundle.min.js'); // Para asegurarse de que JavaScript de Bootstrap esté disponible
+        // Cargar Bootstrap JS solo en el lado del cliente
+        import('bootstrap/dist/js/bootstrap.bundle.min.js')
+            .then(() => {
+                console.log("Bootstrap JS cargado en el cliente");
+            })
+            .catch((error) => console.error("Error cargando Bootstrap JS:", error));
     }, []);
     
     return <Component {...pageProps} />;
