@@ -7,11 +7,11 @@ export default function Formulario() {
         apellido: '',
         correo: '',
         telefono: '',
-        conferencias: [] // Array para almacenar conferencias seleccionadas
+        conferencias: []
     });
     const [conferencias, setConferencias] = useState([]);
     const [mensaje, setMensaje] = useState('');
-    const [alertType, setAlertType] = useState(''); // success o danger
+    const [alertType, setAlertType] = useState('');
 
     useEffect(() => {
         fetchConferencias();
@@ -31,14 +31,12 @@ export default function Formulario() {
     }
 
     const handleCheckboxChange = (e) => {
-        const selectedConferencia = parseInt(e.target.value); // Aseguramos que sea un número
+        const selectedConferencia = parseInt(e.target.value);
         let updatedConferencias = [...formData.conferencias];
 
         if (updatedConferencias.includes(selectedConferencia)) {
-            // Remover la conferencia si ya está seleccionada
             updatedConferencias = updatedConferencias.filter(conf => conf !== selectedConferencia);
         } else {
-            // Limitar la selección a un máximo de 3 conferencias
             if (updatedConferencias.length >= 3) {
                 setMensaje('Solo puedes seleccionar hasta 3 conferencias');
                 setAlertType('danger');
@@ -47,7 +45,7 @@ export default function Formulario() {
             updatedConferencias.push(selectedConferencia);
         }
 
-        setMensaje(''); // Limpiar cualquier mensaje de error
+        setMensaje('');
         setFormData({ ...formData, conferencias: updatedConferencias });
     };
 
@@ -98,9 +96,9 @@ export default function Formulario() {
     };
 
     return (
-        <div className="container-fluid mt-4">
+        <div className="container mt-4">
             <div className="row justify-content-center">
-                <div className="col-12 col-md-10 col-lg-6">
+                <div className="col-12 col-md-8 col-lg-6">
                     <div className="card shadow-lg">
                         <div className="card-header bg-primary text-white">
                             <h2 className="text-center mb-0">Formulario de Registro</h2>
@@ -118,25 +116,23 @@ export default function Formulario() {
                                 </div>
                             )}
                             <form onSubmit={handleSubmit} className="row g-3">
-                            <div className="col-md-12">
-                                <label htmlFor="cedula" className="form-label">Cédula (Ingresar solo Números)</label>
-                                <input
-                                    type="text" // Cambia a 'text' para que podamos aplicar validación personalizada
-                                    id="cedula"
-                                    value={formData.cedula}
-                                    onChange={(e) => {
-                                        // Filtrar solo números
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        handleChange({ target: { id: 'cedula', value } });
-                                    }}
-                                    className="form-control"
-                                    required
-                                    placeholder="Ejemplo: 12457215"
-                                />
-                            </div>
+                                <div className="col-12">
+                                    <label htmlFor="cedula" className="form-label">Cédula (Solo Números)</label>
+                                    <input
+                                        type="text"
+                                        id="cedula"
+                                        value={formData.cedula}
+                                        onChange={(e) => {
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            handleChange({ target: { id: 'cedula', value } });
+                                        }}
+                                        className="form-control"
+                                        required
+                                        placeholder="Ejemplo: 12457215"
+                                    />
+                                </div>
 
-
-                                <div className="col-md-12">
+                                <div className="col-12 col-sm-6">
                                     <label htmlFor="nombre" className="form-label">Nombres</label>
                                     <input
                                         type="text"
@@ -149,7 +145,7 @@ export default function Formulario() {
                                     />
                                 </div>
 
-                                <div className="col-md-12">
+                                <div className="col-12 col-sm-6">
                                     <label htmlFor="apellido" className="form-label">Apellidos</label>
                                     <input
                                         type="text"
@@ -162,7 +158,7 @@ export default function Formulario() {
                                     />
                                 </div>
 
-                                <div className="col-md-12">
+                                <div className="col-12">
                                     <label htmlFor="correo" className="form-label">Correo Electrónico</label>
                                     <input
                                         type="email"
@@ -175,7 +171,7 @@ export default function Formulario() {
                                     />
                                 </div>
 
-                                <div className="col-md-12">
+                                <div className="col-12">
                                     <label htmlFor="telefono" className="form-label">Teléfono</label>
                                     <input
                                         type="tel"
@@ -184,7 +180,6 @@ export default function Formulario() {
                                         placeholder="Ejemplo: 04124551232"
                                         value={formData.telefono}
                                         onChange={(e) => {
-                                            // Filtrar solo números
                                             const value = e.target.value.replace(/\D/g, '');
                                             handleChange({ target: { id: 'telefono', value } });
                                         }}
@@ -193,7 +188,7 @@ export default function Formulario() {
                                     />
                                 </div>
 
-                                <div className="col-md-12">
+                                <div className="col-12">
                                     <label className="form-label">Conferencias (máximo 3)</label>
                                     <div className="row row-cols-1 g-2 mt-2">
                                         {conferencias.map((conf) => (
@@ -222,19 +217,8 @@ export default function Formulario() {
                                 </div>
 
                                 <div className="col-12 text-center">
-                                    <button type="submit" className="btn btn-primary mt-3 w-50">Inscribirse</button>
+                                    <button type="submit" className="btn btn-primary mt-3 w-100">Inscribirse</button>
                                 </div>
-                                {mensaje && (
-                                <div className={`alert alert-${alertType} alert-dismissible fade show`} role="alert">
-                                    <strong>{alertType === 'success' ? '¡Éxito!' : '¡Error!'}</strong> {mensaje}
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        onClick={() => setMensaje('')}
-                                        aria-label="Close"
-                                    ></button>
-                                </div>
-                                )}
                             </form>
                         </div>
                     </div>
