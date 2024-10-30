@@ -1,5 +1,5 @@
 // src/components/TablaInscritos.js
-import React, { useMemo, useEffect, useState, useCallback } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import { useTable } from 'react-table';
 
@@ -23,14 +23,15 @@ export default function TablaInscritos() {
     }, []);
 
     // Función para convertir IDs de conferencias en nombres (como lista)
-    const obtenerNombresConferencias = useCallback((ids) => {
-        if (!ids || conferencias.length === 0) return '';
+    const obtenerNombresConferencias = (ids) => {
+        if (!ids || conferencias.length === 0) return []; // Devuelve un array vacío si no hay IDs o conferencias
         const idArray = ids.split(','); // Separar las IDs por coma
-        return idArray.map((id) => {
-            const conferencia = conferencias.find((conf) => conf.id === parseInt(id, 10));
-            return conferencia ? conferencia.conferencia : 'Desconocido';
-        });
-    }, [conferencias]);
+        return idArray
+            .map((id) => {
+                const conferencia = conferencias.find((conf) => conf.id === parseInt(id, 10));
+                return conferencia ? conferencia.conferencia : 'Desconocido';
+            });
+    };
 
     // Configurar las columnas de la tabla con ancho fijo para algunas columnas
     const columns = useMemo(
@@ -63,17 +64,17 @@ export default function TablaInscritos() {
             },
             {
                 Header: 'Conferencias',
-                accessor: (row) => obtenerNombresConferencias(row.conferencias),
+                accessor: (row) => obtenerNombresConferencias(row.conferencias), // Convierte IDs a lista de nombres
                 Cell: ({ value }) => (
                     <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                        {value.map((conferencia, index) => (
+                        {(Array.isArray(value) ? value : []).map((conferencia, index) => (
                             <li key={index}>{conferencia}</li>
                         ))}
                     </ul>
                 ),
             },
         ],
-        [conferencias, obtenerNombresConferencias]
+        [conferencias]
     );
 
     // Aplicar filtro de conferencia
@@ -82,7 +83,7 @@ export default function TablaInscritos() {
             filtroConferencia
                 ? inscritos.filter((item) => obtenerNombresConferencias(item.conferencias).includes(filtroConferencia))
                 : inscritos,
-        [inscritos, filtroConferencia, conferencias, obtenerNombresConferencias]
+        [inscritos, filtroConferencia, conferencias]
     );
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
@@ -115,23 +116,19 @@ export default function TablaInscritos() {
                 <thead className="table-primary">
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-                            {headerGroup.headers.map((column, index) => (
-                                <th {...column.getHeaderProps({ style: column.style })} key={index}>
-                                    {column.render('Header')}
-                                </th>
+                            {headerGroup.headers.map((column) => (
+                                <th {...column.getHeaderProps({ style: column.style })}>{column.render('Header')}</th>
                             ))}
                         </tr>
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {rows.map((row, rowIndex) => {
+                    {rows.map((row) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} key={rowIndex}>
-                                {row.cells.map((cell, cellIndex) => (
-                                    <td {...cell.getCellProps()} key={cellIndex}>
-                                        {cell.render('Cell')}
-                                    </td>
+                            <tr {...row.getRowProps()} key={row.id}>
+                                {row.cells.map((cell) => (
+                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                 ))}
                             </tr>
                         );

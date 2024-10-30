@@ -55,17 +55,8 @@ export default async function handler(req, res) {
                 return res.status(400).json({ message: 'La cédula ya se encuentra registrada' });
             }
 
-            // Obtener los nombres de las conferencias seleccionadas
-            const { data: conferenciasData, error: errorConferencias } = await supabase
-                .from('cupos')
-                .select('id, conferencia')
-                .in('id', conferencias);
-
-            if (errorConferencias) throw new Error(`Error al obtener conferencias: ${errorConferencias.message}`);
-
-            const nombresConferencias = conferenciasData
-                .map((conf) => conf.conferencia)
-                .join(',');
+            // Unir los IDs de las conferencias en una cadena separada por comas
+            const idsConferencias = conferencias.join(',');
 
             // Verificar disponibilidad de cupos para todas las conferencias seleccionadas
             const { data: cuposDisponibles, error: cupoError } = await supabase
@@ -80,10 +71,10 @@ export default async function handler(req, res) {
                 return res.status(400).json({ message: `No hay cupos disponibles para la conferencia con ID ${sinCupo.id}` });
             }
 
-            // Registrar el participante en la tabla de inscripciones con los nombres de las conferencias
+            // Registrar el participante en la tabla de inscripciones con los IDs de las conferencias
             const { error: inscripcionError } = await supabase
                 .from('inscripciones')
-                .insert([{ cedula, nombre, apellido, correo, telefono, conferencias: nombresConferencias }]);
+                .insert([{ cedula, nombre, apellido, correo, telefono, conferencias: idsConferencias }]);
 
             if (inscripcionError) throw new Error(`Error al registrar inscripción: ${inscripcionError.message}`);
 
