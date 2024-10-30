@@ -1,14 +1,21 @@
 // src/pages/index.js
+import Head from 'next/head';
 import Formulario from '../components/Formulario';
 import TablaCupos from '../components/TablaCupos';
-import TablaInscritos from '../components/TablaInscritos'; // Importa TablaInscritos
+import TablaInscritos from '../components/TablaInscritos';
 
 export default function Home() {
     return (
-        <div>
+        <div className="main-container">
+            {/* Agrega el título y viewport con el componente Head */}
+            <Head>
+                <title>Formulario de Registro</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="description" content="Página de registro para conferencias" />
+            </Head>
+
             <Formulario />
             <TablaCupos />
-            {/* Tabla de Usuarios Registrados */}
             <div style={{ marginTop: '2rem' }}>
                 <TablaInscritos />
             </div>
