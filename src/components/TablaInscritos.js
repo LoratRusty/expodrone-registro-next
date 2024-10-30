@@ -26,11 +26,10 @@ export default function TablaInscritos() {
     const obtenerNombresConferencias = (ids) => {
         if (!ids || conferencias.length === 0) return '';
         const idArray = ids.split(','); // Separar las IDs por coma
-        return idArray
-            .map((id) => {
-                const conferencia = conferencias.find((conf) => conf.id === parseInt(id, 10));
-                return conferencia ? conferencia.conferencia : 'Desconocido';
-            });
+        return idArray.map((id) => {
+            const conferencia = conferencias.find((conf) => conf.id === parseInt(id, 10));
+            return conferencia ? conferencia.conferencia : 'Desconocido';
+        });
     };
 
     // Configurar las columnas de la tabla con ancho fijo para algunas columnas
@@ -74,7 +73,7 @@ export default function TablaInscritos() {
                 ),
             },
         ],
-        [conferencias]
+        [conferencias, obtenerNombresConferencias]
     );
 
     // Aplicar filtro de conferencia
@@ -83,7 +82,7 @@ export default function TablaInscritos() {
             filtroConferencia
                 ? inscritos.filter((item) => obtenerNombresConferencias(item.conferencias).includes(filtroConferencia))
                 : inscritos,
-        [inscritos, filtroConferencia, conferencias]
+        [inscritos, filtroConferencia, conferencias, obtenerNombresConferencias]
     );
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
@@ -116,19 +115,23 @@ export default function TablaInscritos() {
                 <thead className="table-primary">
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-                            {headerGroup.headers.map((column) => (
-                                <th {...column.getHeaderProps({ style: column.style })}>{column.render('Header')}</th>
+                            {headerGroup.headers.map((column, index) => (
+                                <th {...column.getHeaderProps({ style: column.style })} key={index}>
+                                    {column.render('Header')}
+                                </th>
                             ))}
                         </tr>
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {rows.map((row) => {
+                    {rows.map((row, rowIndex) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} key={row.id}>
-                                {row.cells.map((cell) => (
-                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                            <tr {...row.getRowProps()} key={rowIndex}>
+                                {row.cells.map((cell, cellIndex) => (
+                                    <td {...cell.getCellProps()} key={cellIndex}>
+                                        {cell.render('Cell')}
+                                    </td>
                                 ))}
                             </tr>
                         );
