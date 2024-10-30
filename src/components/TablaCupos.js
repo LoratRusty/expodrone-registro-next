@@ -32,10 +32,10 @@ export default function TablaCupos() {
     }, []);
 
     return (
-        <div className="container mt-4">
+        <div className="container-fluid mt-4">
             <h2 className="text-center mb-4">Listado de Conferencias</h2>
             <div className="table-responsive">
-                <table id="tablaCupos" className="table table-striped table-bordered w-100">
+                <table id="tablaCupos" className="table table-striped table-bordered">
                     <thead className="table-primary">
                         <tr>
                             <th>Conferencia</th>
