@@ -5,64 +5,86 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
-    if (req.method === 'GET') {
-        // Obtener todas las conferencias y sus datos
-        const { data, error } = await supabase
-            .from('cupos')
-            .select('id, conferencia, expositores, dia, cupos_disponibles');
-
-        if (error) {
-            console.error('Error al obtener las conferencias:', error);
-            return res.status(500).json({ message: 'Error al obtener las conferencias' });
+    try {
+        if (!supabaseUrl || !supabaseKey) {
+            throw new Error('Variables de entorno Supabase URL o ANON_KEY no están configuradas.');
         }
 
-        return res.status(200).json(data); // Enviar los datos de las conferencias al frontend
+        if (req.method === 'GET') {
+            const { data, error } = await supabase
+                .from('cupos')
+                .select('id, conferencia, expositores, dia, cupos_disponibles');
+
+            if (error) throw new Error(`Error al obtener conferencias: ${error.message}`);
+            return res.status(200).json(data);
+        }
+
+        if (req.method === 'POST') {
+            const { cedula, nombre, apellido, correo, telefono, conferencias } = req.body;
+
+            if (!Array.isArray(conferencias) || conferencias.length === 0) {
+                return res.status(400).json({ message: 'Debes seleccionar al menos una conferencia' });
+            }
+
+            if (conferencias.length > 3) {
+                return res.status(400).json({ message: 'No puedes seleccionar más de 3 conferencias' });
+            }
+
+            // Verificar si la cédula ya está registrada
+            const { data: registroExistente, error: errorVerificacion } = await supabase
+                .from('inscripciones')
+                .select('cedula')
+                .eq('cedula', cedula)
+                .single();
+
+            if (errorVerificacion && errorVerificacion.code !== 'PGRST116') throw errorVerificacion;
+
+            if (registroExistente) {
+                // Si ya existe, retornamos un mensaje específico
+                return res.status(400).json({ message: 'La cédula ya se encuentra registrada' });
+            }
+
+            // Convertimos las conferencias seleccionadas en una cadena separada por comas
+            const conferenciasSeleccionadas = conferencias.join(',');
+
+            // Verificar disponibilidad de cupos para todas las conferencias seleccionadas
+            const { data: cuposDisponibles, error: cupoError } = await supabase
+                .from('cupos')
+                .select('id, cupos_disponibles')
+                .in('id', conferencias);
+
+            if (cupoError) throw new Error(`Error al verificar cupos: ${cupoError.message}`);
+
+            const sinCupo = cuposDisponibles.find(cupo => cupo.cupos_disponibles <= 0);
+            if (sinCupo) {
+                return res.status(400).json({ message: `No hay cupos disponibles para la conferencia con ID ${sinCupo.id}` });
+            }
+
+            // Registrar el participante en la tabla de inscripciones con la cadena de conferencias
+            const { error: inscripcionError } = await supabase
+                .from('inscripciones')
+                .insert([{ cedula, nombre, apellido, correo, telefono, conferencias: conferenciasSeleccionadas }]);
+
+            if (inscripcionError) throw new Error(`Error al registrar inscripción: ${inscripcionError.message}`);
+
+            // Actualizar el número de cupos disponibles para cada conferencia seleccionada
+            for (const conferencia of conferencias) {
+                const cupoActual = cuposDisponibles.find(cupo => cupo.id === conferencia);
+                const { error: actualizarCuposError } = await supabase
+                    .from('cupos')
+                    .update({ cupos_disponibles: cupoActual.cupos_disponibles - 1 })
+                    .eq('id', conferencia);
+
+                if (actualizarCuposError) throw new Error(`Error al actualizar cupos: ${actualizarCuposError.message}`);
+            }
+
+            return res.status(200).json({ message: 'Inscripción exitosa a las conferencias seleccionadas' });
+        }
+
+        res.setHeader('Allow', ['GET', 'POST']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
+    } catch (error) {
+        console.error('Error en el handler API:', error.message);
+        return res.status(500).json({ message: `Error del servidor: ${error.message}` });
     }
-
-    if (req.method === 'POST') {
-        const { cedula, nombre, apellido, correo, telefono, conferencia } = req.body;
-
-        // Verificar la disponibilidad de cupos para la conferencia seleccionada
-        const { data: cupoData, error: cupoError } = await supabase
-            .from('cupos')
-            .select('cupos_disponibles')
-            .eq('id', conferencia)
-            .single();
-
-        if (cupoError) {
-            console.error('Error al verificar cupos:', cupoError);
-            return res.status(500).json({ message: 'Error al verificar los cupos disponibles' });
-        }
-
-        if (!cupoData || cupoData.cupos_disponibles <= 0) {
-            return res.status(400).json({ message: 'No hay cupos disponibles para esta conferencia' });
-        }
-
-        // Registrar al participante en la tabla de inscripciones
-        const { error: inscripcionError } = await supabase
-            .from('inscripciones')
-            .insert([{ cedula, nombre, apellido, correo, telefono, conferencia }]);
-
-        if (inscripcionError) {
-            console.error('Error al registrar inscripción:', inscripcionError);
-            return res.status(500).json({ message: 'Error al registrar la inscripción' });
-        }
-
-        // Actualizar el número de cupos disponibles
-        const { error: actualizarCuposError } = await supabase
-            .from('cupos')
-            .update({ cupos_disponibles: cupoData.cupos_disponibles - 1 })
-            .eq('id', conferencia);
-
-        if (actualizarCuposError) {
-            console.error('Error al actualizar cupos:', actualizarCuposError);
-            return res.status(500).json({ message: 'Error al actualizar los cupos disponibles' });
-        }
-
-        return res.status(200).json({ message: 'Inscripción exitosa' });
-    }
-
-    // Método no permitido
-    res.setHeader('Allow', ['GET', 'POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
 }

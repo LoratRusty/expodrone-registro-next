@@ -83,3 +83,17 @@ button:hover {
         font-size: 0.8em;
     }
 }
+
+/* Ajuste de la tabla para pantallas pequeñas */
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Ajuste de la tabla para que ocupe todo el ancho en pantallas grandes */
+.container-fluid .table {
+    width: 100%;
+}
+

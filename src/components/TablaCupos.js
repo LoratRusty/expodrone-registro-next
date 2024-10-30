@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import $ from 'jquery';
+import 'datatables.net-bs5';
+import 'datatables.net-responsive-bs5';
 
 export default function TablaCupos() {
     const [cupos, setCupos] = useState([]);
@@ -6,14 +9,30 @@ export default function TablaCupos() {
     useEffect(() => {
         fetch('/api/registrar')
             .then((res) => res.json())
-            .then((data) => setCupos(data));
+            .then((data) => {
+                setCupos(data);
+                $('#tablaCupos').DataTable({
+                    responsive: true, // Habilita la responsividad
+                    autoWidth: false, // Previene que DataTables ajuste el ancho automáticamente
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json' // Traducción a español (opcional)
+                    }
+                });
+            });
+
+        // Limpiar DataTable al desmontar el componente
+        return () => {
+            if ($.fn.DataTable.isDataTable('#tablaCupos')) {
+                $('#tablaCupos').DataTable().destroy();
+            }
+        };
     }, []);
 
     return (
-        <div className="container mt-4">
+        <div className="container-fluid mt-4">
             <h2 className="text-center mb-4">Listado de Conferencias</h2>
             <div className="table-responsive">
-                <table className="table table-striped table-bordered">
+                <table id="tablaCupos" className="table table-striped table-bordered">
                     <thead className="table-primary">
                         <tr>
                             <th>Conferencia</th>
