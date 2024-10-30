@@ -1,5 +1,5 @@
 // src/components/TablaInscritos.js
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import { useTable } from 'react-table';
 
@@ -23,14 +23,14 @@ export default function TablaInscritos() {
     }, []);
 
     // Función para convertir IDs de conferencias en nombres (como lista)
-    const obtenerNombresConferencias = (ids) => {
+    const obtenerNombresConferencias = useCallback((ids) => {
         if (!ids || conferencias.length === 0) return '';
         const idArray = ids.split(','); // Separar las IDs por coma
         return idArray.map((id) => {
             const conferencia = conferencias.find((conf) => conf.id === parseInt(id, 10));
             return conferencia ? conferencia.conferencia : 'Desconocido';
         });
-    };
+    }, [conferencias]);
 
     // Configurar las columnas de la tabla con ancho fijo para algunas columnas
     const columns = useMemo(
@@ -63,7 +63,7 @@ export default function TablaInscritos() {
             },
             {
                 Header: 'Conferencias',
-                accessor: (row) => obtenerNombresConferencias(row.conferencias), // Convierte IDs a lista de nombres
+                accessor: (row) => obtenerNombresConferencias(row.conferencias),
                 Cell: ({ value }) => (
                     <ul style={{ paddingLeft: '20px', margin: 0 }}>
                         {value.map((conferencia, index) => (
