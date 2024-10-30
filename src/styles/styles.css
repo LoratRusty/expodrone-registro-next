@@ -3,11 +3,12 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f3f4f6;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho */
 }
 
 /* Contenedor principal del formulario */
@@ -18,7 +19,8 @@ body {
     padding: 40px 30px;
     border-radius: 12px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho */
 }
 
 /* Título del formulario */
@@ -28,28 +30,25 @@ h2 {
     margin-bottom: 20px;
     text-align: center;
     font-weight: 600;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Estilos de etiquetas y campos del formulario */
 label {
-    font-weight: bold; /* Texto en negrita */
+    font-weight: bold;
     color: #000; /* Color negro para etiquetas */
-    font-size: 0.95em;
+    font-size: 1em;
     margin-bottom: 5px;
-}
-
-/* Texto en negrita y color negro para el texto dentro del select */
-select.form-control {
-    color: #000;
-    font-weight: bold; /* Texto en negrita */
+    display: block; /* Etiquetas en línea separada */
 }
 
 .form-control {
     padding: 12px;
     font-size: 1em;
     border-radius: 8px;
+    margin-bottom: 15px; /* Espacio entre los campos */
     transition: border-color 0.3s ease;
+    width: 100%; /* Asegura que el ancho sea 100% en móviles */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho */
 }
 
 .form-control:focus {
@@ -67,6 +66,8 @@ select.form-control {
     transition: background-color 0.3s ease, transform 0.2s ease;
     display: block;
     width: 100%;
+    margin-top: 20px;
+    box-sizing: border-box;
 }
 
 .btn-primary:hover {
@@ -88,20 +89,22 @@ select.form-control {
 /* Ajustes para pantallas pequeñas (menos de 576px) */
 @media (max-width: 576px) {
     .container {
-        padding: 30px 20px;
+        padding: 20px 15px;
+        width: 100%; /* Asegura que el contenedor ocupe todo el ancho en móviles */
     }
     h2 {
         font-size: 1.5em;
     }
     label {
-        font-size: 0.85em;
+        font-size: 0.9em;
     }
     .form-control {
         padding: 10px;
-        font-size: 0.95em;
+        font-size: 0.9em;
+        margin-bottom: 12px;
     }
     .btn-primary {
-        font-size: 0.95em;
+        font-size: 1em;
         padding: 10px;
     }
 }
@@ -115,6 +118,6 @@ select.form-control {
         font-size: 1.6em;
     }
     label {
-        font-size: 0.9em;
+        font-size: 0.95em;
     }
 }
